@@ -1,0 +1,9 @@
+<button class="btn btn-primary my-3" (click)="enableList = !enableList">{{enableList ? "Ocultar" : "Mostrar"}}</button>
+<div class="card" >
+  <div class="card-header">
+    Listado de cursos
+  </div>
+  <ul class="list-group" *ngIf="enableList">
+    <li class="list-group-item" *ngFor="let curse of curseList">{{curse}}</li>
+  </ul>
+</div>
