@@ -14,6 +14,8 @@ export class FormComponent {
   public client: Client = new Client();
   public title = 'Agregar cliente';
   @ViewChild('swalSaved') swalSaved: SwalComponent;
+  @ViewChild('swalError') swalError: SwalComponent;
+  public clientId: number;
 
   constructor(private clientService: ClientsService,
               private router: Router,
@@ -26,9 +28,14 @@ export class FormComponent {
   }
 
   loadClient(id: number) {
+    this.clientId = id;
     this.clientService.getClient(id).subscribe(client => {
       this.title = 'Modificar cliente';
       this.client = client;
+    }, error => {
+      this.swalError.text = error.error.message;
+      this.swalError.show();
+      this.router.navigate(['/clients']);
     });
   }
 
