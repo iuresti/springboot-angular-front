@@ -1,15 +1,45 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
+import {Client} from './client';
+import {ClientsService} from './clients.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {SwalComponent} from '@toverux/ngx-sweetalert2';
 
 @Component({
   selector: 'app-form',
   templateUrl: './form.component.html',
   styles: []
 })
-export class FormComponent implements OnInit {
+export class FormComponent {
 
-  constructor() { }
+  public client: Client = new Client();
+  public title = 'Agregar cliente';
+  @ViewChild('swalSaved') swalSaved: SwalComponent;
 
-  ngOnInit() {
+  constructor(private clientService: ClientsService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
+    this.activatedRoute.params.subscribe(params => {
+      if (params['id']) {
+        this.loadClient(params['id']);
+      }
+    });
   }
 
+  loadClient(id: number) {
+    this.clientService.getClient(id).subscribe(client => {
+      this.title = 'Modificar cliente';
+      this.client = client;
+    });
+  }
+
+  create() {
+    this.clientService.save(this.client).subscribe(() => {
+      this.router.navigate(['/clients']);
+      this.swalSaved.show();
+    });
+  }
+
+  goBack() {
+    this.router.navigate(['/clients']);
+  }
 }

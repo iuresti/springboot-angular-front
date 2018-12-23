@@ -10,11 +10,14 @@ import {RouterModule, Routes} from '@angular/router';
 import {HttpClientModule} from '@angular/common/http';
 import {FormComponent} from './clients/form.component';
 import {FormsModule} from '@angular/forms';
+import {SweetAlert2Module} from '@toverux/ngx-sweetalert2';
 
 const ROUTES: Routes = [
   {path: '', redirectTo: '/clients', pathMatch: 'full'},
   {path: 'directives', component: DirectiveComponent},
   {path: 'clients', component: ClientsComponent},
+  {path: 'clients/form', component: FormComponent},
+  {path: 'clients/form/:id', component: FormComponent}
 ];
 
 @NgModule({
@@ -30,7 +33,8 @@ const ROUTES: Routes = [
     BrowserModule,
     HttpClientModule,
     FormsModule,
-    RouterModule.forRoot(ROUTES)
+    RouterModule.forRoot(ROUTES),
+    SweetAlert2Module.forRoot()
   ],
   providers: [],
   bootstrap: [AppComponent]

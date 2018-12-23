@@ -1,3 +1,34 @@
-<p>
-  form works!
-</p>
+<div class="card bg-dark text-white">
+  <div class="card-header">
+    {{title}}
+  </div>
+  <div class="card-body">
+    <form>
+      <div class="form-group row">
+        <label for="name" class="col-form-label col-sm-2">Nombre</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" [(ngModel)]="client.name" id="name" name="name"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="lastName" class="col-form-label col-sm-2">Apellido</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" [(ngModel)]="client.lastName" id="lastName" name="lastName"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <label for="email" class="col-form-label col-sm-2">Correo</label>
+        <div class="col-sm-6">
+          <input type="text" class="form-control" [(ngModel)]="client.email" id="email" name="email"/>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-6">
+          <button class="btn btn-primary" role="button" (click)="create()">Guardar</button>
+          <button class="btn btn-secondary ml-2" role="button" (click)="goBack()">Regresar</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+<swal #swalSaved title="Guardar cliente" text="El Cliente {{client.name}} se guardó exitosamente" type="success"></swal>
