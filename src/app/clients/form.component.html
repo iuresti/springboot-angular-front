@@ -3,33 +3,62 @@
     {{title}}
   </div>
   <div class="card-body">
-    <form>
+    <form #clientForm="ngForm">
       <div class="form-group row">
         <label for="name" class="col-form-label col-sm-2">Nombre</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" [(ngModel)]="client.name" id="name" name="name"/>
+          <input type="text" class="form-control" [(ngModel)]="client.name" id="name" name="name"
+                 required minlength="4" #nameTextBox="ngModel"/>
+          <div class="alert alert-danger"
+               *ngIf="nameTextBox.invalid && (nameTextBox.dirty || nameTextBox.touched)">
+            <div *ngIf="nameTextBox.errors.required">
+              El nombre es requerido
+            </div>
+            <div *ngIf="nameTextBox.errors.minlength">
+              El nombre requiere mínimo 4 caracteres
+            </div>
+          </div>
         </div>
       </div>
       <div class="form-group row">
         <label for="lastName" class="col-form-label col-sm-2">Apellido</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" [(ngModel)]="client.lastName" id="lastName" name="lastName"/>
+          <input type="text" class="form-control" [(ngModel)]="client.lastName" id="lastName"
+                 #lastNameTextBox="ngModel"
+                 name="lastName" required/>
+          <div class="alert alert-danger"
+               *ngIf="lastNameTextBox.invalid && (lastNameTextBox.dirty || lastNameTextBox.touched)">
+            <div *ngIf="lastNameTextBox.errors.required">
+              El apellido es requerido
+            </div>
+          </div>
         </div>
       </div>
       <div class="form-group row">
         <label for="email" class="col-form-label col-sm-2">Correo</label>
         <div class="col-sm-6">
-          <input type="text" class="form-control" [(ngModel)]="client.email" id="email" name="email"/>
+          <input type="email" class="form-control" [(ngModel)]="client.email" id="email"
+                 name="email" email required #emailTextBox="ngModel" />
+          <div class="alert alert-danger"
+               *ngIf="emailTextBox.invalid && (emailTextBox.dirty || emailTextBox.touched)">
+            <div *ngIf="emailTextBox.errors.required">
+              El email es requerido
+            </div>
+            <div *ngIf="emailTextBox.errors.email">
+              El email tiene un formato inválido
+            </div>
+          </div>
         </div>
       </div>
       <div class="form-group row">
         <div class="col-sm-6">
-          <button class="btn btn-primary" role="button" (click)="create()">Guardar</button>
+          <button class="btn btn-primary" [disabled]="!clientForm.form.valid" role="button" (click)="create()">Guardar</button>
           <button class="btn btn-secondary ml-2" role="button" (click)="goBack()">Regresar</button>
         </div>
       </div>
     </form>
   </div>
 </div>
-<swal #swalSaved title="Guardar cliente" text="El Cliente {{client.name}} se guardó exitosamente" type="success"></swal>
+<swal #swalSaved title="Guardar cliente" text="El Cliente {{client.name}} se guardó exitosamente"
+      type="success"></swal>
 <swal #swalError title="Cargar cliente" text="" type="error"></swal>
