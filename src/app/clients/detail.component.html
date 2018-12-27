@@ -1,0 +1,23 @@
+<div class="card bg-dark text-white">
+  <div class="card-header">
+    Detalle del cliente <span *ngIf="client">{{client.name}}</span>
+  </div>
+  <div class="card-body">
+    <div class="input-group">
+      <div class="custom-file">
+        <input type="file" class="custom-file-input" id="inputGroupFile04"
+               aria-describedby="inputGroupFileAddon04"
+               (change)="selectPicture($event)">
+        <label class="custom-file-label" for="inputGroupFile04"></label>
+      </div>
+      <div class="input-group-append">
+        <button (click)="uploadPicture()" class="btn btn-outline-secondary" type="button"
+                id="inputGroupFileAddon04">Subir
+        </button>
+      </div>
+    </div>
+    <div>
+      <img *ngIf="client?.pathImage" [src]="imageSource" class="img-thumbnail rounded">
+    </div>
+  </div>
+</div>

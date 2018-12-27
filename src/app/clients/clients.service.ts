@@ -3,6 +3,7 @@ import {Client} from './client';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
+import {Page} from '../share/page';
 
 @Injectable({
   providedIn: 'root'
@@ -15,8 +16,8 @@ export class ClientsService {
     this.httpHeaders.set('content-type', ['application/json']);
   }
 
-  public getClients(): Observable<Client[]> {
-    return this.httpClient.get<Client[]>(this.clientBaseURL);
+  public getClients(page: number): Observable<Page<Client>> {
+    return this.httpClient.get<Page<Client>>(`${this.clientBaseURL}/page/${page}`);
   }
 
   public save(client: Client): Observable<Client> {
@@ -35,5 +36,13 @@ export class ClientsService {
 
   public delete(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.clientBaseURL}/${id}`);
+  }
+
+  public uploadPicture(file: File, id: number): Observable<Client> {
+    const formData = new FormData();
+
+    formData.append('file', file);
+
+    return this.httpClient.put<Client>(`${this.clientBaseURL}/${id}/image`, formData);
   }
 }

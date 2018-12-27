@@ -6,10 +6,10 @@
       <button class="btn btn-rounded btn-primary" [routerLink]="['/clients/form']">Crear Cliente
       </button>
     </div>
-    <div *ngIf="clients?.length == 0" class="alert alert-info">
+    <div *ngIf="page.empty" class="alert alert-info">
       No hay clientes registrados
     </div>
-    <table class="table" *ngIf="clients?.length > 0">
+    <table class="table" *ngIf="!(page?.empty)">
       <thead>
       <tr>
         <th scope="col">id</th>
@@ -21,17 +21,20 @@
       </tr>
       </thead>
       <tbody>
-      <tr *ngFor="let client of clients">
-        <th scope="row">{{client.id}}</th>
+      <tr *ngFor="let client of page.content">
+        <th scope="row">
+          <button class="btn btn-success"
+                  [routerLink]="['/clients/detail', client.id]">{{client.id}}</button>
+        </th>
         <td>{{client.name}}</td>
         <td>{{client.lastName}}</td>
         <td>{{client.email}}</td>
-        <td>{{client.createdAt}}</td>
+        <td>{{client.createdAt | date:'fullDate'}}</td>
         <td>
           <button class="btn btn-primary" role="button" [routerLink]="['/clients/form', client.id]">
             Editar
           </button>
-          <button class="btn btn-danger ml-3" role="button" [swal]="deleteConfirmDialog" >
+          <button class="btn btn-danger ml-3" role="button" [swal]="deleteConfirmDialog">
             Eliminar
           </button>
         </td>
@@ -50,6 +53,9 @@
       </tbody>
     </table>
   </div>
-</div>
 
-<swal #swalDeleted title="Eliminar cliente" text="El Cliente se eliminó exitosamente" type="success"></swal>
+  <app-paginator [page]="page" *ngIf="!page.empty"></app-paginator>
+
+</div>
+<swal #swalDeleted title="Eliminar cliente" text="El Cliente se eliminó exitosamente"
+      type="success"></swal>

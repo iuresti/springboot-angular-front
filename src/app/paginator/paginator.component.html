@@ -1,0 +1,7 @@
+<ul class="pagination ml-4">
+  <li *ngFor="let pageIndex of pageArray" class="page-item"
+      [ngClass]="{'disabled':page.number == pageIndex - 1}">
+    <a [routerLink]="['/clients/page', pageIndex]" class="page-link">{{pageIndex}}</a>
+  </li>
+
+</ul>

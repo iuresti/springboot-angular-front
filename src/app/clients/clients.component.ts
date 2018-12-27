@@ -2,6 +2,8 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {Client} from './client';
 import {ClientsService} from './clients.service';
 import {SwalComponent} from '@toverux/ngx-sweetalert2';
+import {Page} from '../share/page';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-clients',
@@ -10,23 +12,28 @@ import {SwalComponent} from '@toverux/ngx-sweetalert2';
 })
 export class ClientsComponent implements OnInit {
 
+  public page: Page<Client> = new Page<Client>();
   public clients: Client[] = [];
   @ViewChild('swalDeleted') swalDeleted: SwalComponent;
 
-  constructor(private clientsService: ClientsService) {
+  constructor(private clientsService: ClientsService,
+              private activatedRoute: ActivatedRoute) {
   }
 
   ngOnInit() {
-    this.refreshClients();
+    this.activatedRoute.params.subscribe(params => {
+      this.refreshClients(params['page'] ? (+params['page']) - 1 : 0);
+    });
+
   }
 
-  refreshClients() {
-    this.clientsService.getClients().subscribe(clients => this.clients = clients);
+  refreshClients(pageToGo: number) {
+    this.clientsService.getClients(pageToGo).subscribe(page => this.page = page);
   }
 
   deleteClient(client: Client) {
     this.clientsService.delete(client.id).subscribe(() => {
-      this.refreshClients();
+      this.refreshClients(0);
       this.swalDeleted.show();
     });
   }

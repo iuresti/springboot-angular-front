@@ -1,5 +1,5 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
+import {LOCALE_ID, NgModule} from '@angular/core';
 
 import {AppComponent} from './app.component';
 import {HeaderComponent} from './header/header.component';
@@ -11,14 +11,22 @@ import {HttpClientModule} from '@angular/common/http';
 import {FormComponent} from './clients/form.component';
 import {FormsModule} from '@angular/forms';
 import {SweetAlert2Module} from '@toverux/ngx-sweetalert2';
+import {registerLocaleData} from '@angular/common';
+import localeES from '@angular/common/locales/es-MX';
+import {PaginatorComponent} from './paginator/paginator.component';
+import {DetailComponent} from './clients/detail.component';
 
 const ROUTES: Routes = [
   {path: '', redirectTo: '/clients', pathMatch: 'full'},
   {path: 'directives', component: DirectiveComponent},
   {path: 'clients', component: ClientsComponent},
+  {path: 'clients/page/:page', component: ClientsComponent},
   {path: 'clients/form', component: FormComponent},
-  {path: 'clients/form/:id', component: FormComponent}
+  {path: 'clients/form/:id', component: FormComponent},
+  {path: 'clients/detail/:id', component: DetailComponent}
 ];
+
+registerLocaleData(localeES, 'es-MX');
 
 @NgModule({
   declarations: [
@@ -27,7 +35,9 @@ const ROUTES: Routes = [
     FooterComponent,
     DirectiveComponent,
     ClientsComponent,
-    FormComponent
+    FormComponent,
+    PaginatorComponent,
+    DetailComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +46,7 @@ const ROUTES: Routes = [
     RouterModule.forRoot(ROUTES),
     SweetAlert2Module.forRoot()
   ],
-  providers: [],
+  providers: [{provide: LOCALE_ID, useValue: 'es-MX'}],
   bootstrap: [AppComponent]
 })
 export class AppModule {
