@@ -1,9 +1,11 @@
 import {Injectable} from '@angular/core';
 import {Client} from './client';
-import {Observable} from 'rxjs';
+import {Observable, of} from 'rxjs';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment';
 import {Page} from '../share/page';
+import {Region} from './region';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,7 @@ import {Page} from '../share/page';
 export class ClientsService {
   private httpHeaders = new HttpHeaders();
   private clientBaseURL = `${environment.baseApiURL}/client`;
+  private cachedRegions: Region[];
 
   constructor(private httpClient: HttpClient) {
     this.httpHeaders.set('content-type', ['application/json']);
@@ -44,5 +47,13 @@ export class ClientsService {
     formData.append('file', file);
 
     return this.httpClient.put<Client>(`${this.clientBaseURL}/${id}/image`, formData);
+  }
+
+  public getRegions(): Observable<Region[]> {
+    if (this.cachedRegions) {
+      return of(this.cachedRegions);
+    }
+
+    return this.httpClient.get<Region[]>(`${environment.baseApiURL}/region`).pipe(tap(regions => this.cachedRegions = regions));
   }
 }

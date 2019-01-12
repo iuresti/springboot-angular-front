@@ -51,6 +51,16 @@
         </div>
       </div>
       <div class="form-group row">
+        <label for="region" class="col-form-label col-sm-2">Región</label>
+        <div class="col-sm-6">
+          <select [compareWith]="compareRegions" class="form-control" [(ngModel)]="client.region" id="region"
+                 name="region" required>
+            <option [ngValue]="undefined">---Seleccione una región---</option>
+            <option *ngFor="let region of regions" [ngValue]="region">{{region.name}}</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
         <div class="col-sm-6">
           <button class="btn btn-primary" [disabled]="!clientForm.form.valid" role="button" (click)="create()">Guardar</button>
           <button class="btn btn-secondary ml-2" role="button" (click)="goBack()">Regresar</button>
