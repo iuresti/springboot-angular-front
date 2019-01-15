@@ -4,6 +4,7 @@ import {ClientsService} from './clients.service';
 import {SwalComponent} from '@toverux/ngx-sweetalert2';
 import {Page} from '../share/page';
 import {ActivatedRoute} from '@angular/router';
+import {AuthService} from '../users/auth.service';
 
 @Component({
   selector: 'app-clients',
@@ -17,7 +18,8 @@ export class ClientsComponent implements OnInit {
   @ViewChild('swalDeleted') swalDeleted: SwalComponent;
 
   constructor(private clientsService: ClientsService,
-              private activatedRoute: ActivatedRoute) {
+              private activatedRoute: ActivatedRoute,
+              public authService: AuthService) {
   }
 
   ngOnInit() {

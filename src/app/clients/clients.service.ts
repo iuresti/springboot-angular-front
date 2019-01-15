@@ -6,6 +6,7 @@ import {environment} from '../../environments/environment';
 import {Page} from '../share/page';
 import {Region} from './region';
 import {tap} from 'rxjs/operators';
+import {AuthService} from '../users/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,8 @@ export class ClientsService {
   private clientBaseURL = `${environment.baseApiURL}/client`;
   private cachedRegions: Region[];
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient,
+              private authService: AuthService) {
     this.httpHeaders.set('content-type', ['application/json']);
   }
 
@@ -27,9 +29,7 @@ export class ClientsService {
     if (client.id) {
       return this.httpClient.put<Client>(this.clientBaseURL, client);
     } else {
-      return this.httpClient.post<Client>(this.clientBaseURL, client, {
-        headers: this.httpHeaders
-      });
+      return this.httpClient.post<Client>(this.clientBaseURL, client);
     }
   }
 

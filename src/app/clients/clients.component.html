@@ -2,7 +2,7 @@
   <div class="card-header">Clientes</div>
   <div class="card-body text-primary">
     <h5 class="card-title">Listado de clientes</h5>
-    <div class="text-left my-2">
+    <div class="text-left my-2" *ngIf="authService.hasRole('ADMIN')">
       <button class="btn btn-rounded btn-primary" [routerLink]="['/clients/form']">Crear Cliente
       </button>
     </div>
@@ -17,20 +17,20 @@
         <th scope="col">Apellido</th>
         <th scope="col">email</th>
         <th scope="col">Fecha</th>
-        <th>&nbsp;</th>
+        <th *ngIf="authService.hasRole('ADMIN')">&nbsp;</th>
       </tr>
       </thead>
       <tbody>
       <tr *ngFor="let client of page.content">
         <th scope="row">
-          <button class="btn btn-success"
+          <button [disabled]="!authService.hasRole('USER')" class="btn btn-success"
                   [routerLink]="['/clients/detail', client.id]">{{client.id}}</button>
         </th>
         <td>{{client.name}}</td>
         <td>{{client.lastName}}</td>
         <td>{{client.email}}</td>
         <td>{{client.createdAt | date:'fullDate'}}</td>
-        <td>
+        <td *ngIf="authService.hasRole('ADMIN')">
           <button class="btn btn-primary" role="button" [routerLink]="['/clients/form', client.id]">
             Editar
           </button>
