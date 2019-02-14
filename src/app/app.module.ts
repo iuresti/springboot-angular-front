@@ -20,9 +20,13 @@ import {AuthGuard} from './users/guards/auth.guard';
 import {RoleGuard} from './users/guards/role.guard';
 import {TokenInterceptor} from './users/interceptors/token.interceptor';
 import {AuthInterceptor} from './users/interceptors/auth.interceptor';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { environment } from '../environments/environment';
 
 const ROUTES: Routes = [
-  {path: '', redirectTo: '/clients', pathMatch: 'full'},
+  {path: '', redirectTo: '/login', pathMatch: 'full'},
   {path: 'directives', component: DirectiveComponent},
   {path: 'clients', component: ClientsComponent},
   {path: 'clients/page/:page', component: ClientsComponent},
@@ -47,6 +51,9 @@ registerLocaleData(localeES, 'es-MX');
     LoginComponent
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase, 'angular-auth-firebase'),
+    AngularFirestoreModule,
+    AngularFireAuthModule,
     BrowserModule,
     HttpClientModule,
     FormsModule,

@@ -5,13 +5,19 @@ import {AuthService} from '../auth.service';
 import {catchError} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import swal from 'sweetalert2';
+import {AngularFireAuth} from '@angular/fire/auth';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
 
+  private user: Observable<firebase.User>;
 
-  constructor(private  authService: AuthService,
+
+  constructor(private _firebaseAuth: AngularFireAuth,
+              private  authService: AuthService,
               private router: Router) {
+
+    this.user = _firebaseAuth.authState;
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {

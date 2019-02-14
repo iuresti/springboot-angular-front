@@ -4,6 +4,9 @@ import {User} from './user';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {map, tap} from 'rxjs/operators';
 
+import {AngularFireAuth} from 'angularfire2/auth';
+import * as firebase from 'firebase/app';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -13,9 +16,23 @@ export class AuthService {
   private accessToken: string;
   private _user: User;
 
-  constructor(private httpClient: HttpClient) {
+  constructor(public afAuth: AngularFireAuth, private httpClient: HttpClient) {
     this.accessToken = sessionStorage.getItem(this.ACCESS_TOKEN);
     this._user = this.buildUser(this.accessToken);
+  }
+
+  doGoogleLogin(): Observable<any> {
+    return new Observable<any>(subscriber => {
+      const provider = new firebase.auth.GoogleAuthProvider();
+      provider.addScope('profile');
+      provider.addScope('email');
+      this.afAuth.auth
+        .signInWithPopup(provider)
+        .then(res => {
+          subscriber.next({response: res, currentUser: res.user});
+          subscriber.complete();
+        });
+    });
   }
 
   public get user(): User {

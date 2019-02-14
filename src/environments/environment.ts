@@ -4,7 +4,16 @@
 
 export const environment = {
   production: false,
-  baseApiURL: 'http://localhost:8080/api'
+  baseApiURL: 'http://localhost:8080/api',
+  firebase:
+    {
+      apiKey: 'AIzaSyD6A1ZWtpbHMNq1b6yrPYxU_ms_I_HMl0o',
+      authDomain: 'iuresti-test-2.firebaseapp.com',
+      databaseURL: 'https://iuresti-test-2.firebaseio.com',
+      projectId: 'iuresti-test-2',
+      storageBucket: 'iuresti-test-2.appspot.com',
+      messagingSenderId: '379993128415'
+    }
 };
 
 /*

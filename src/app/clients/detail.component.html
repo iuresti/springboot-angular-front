@@ -19,5 +19,28 @@
     <div>
       <img *ngIf="client?.pathImage" [src]="imageSource" class="img-thumbnail rounded">
     </div>
+    <div class="row">
+      <div class="alert alert-info my-4" *ngIf="client.folios.length === 0">
+        No hay facturas asignadas
+      </div>
+      <table class="table table-bordered table-striped my-4">
+        <thead>
+        <tr>
+          <th>Folio</th>
+          <th>Descripción</th>
+          <th>Fecha</th>
+          <th>Total</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let folio of client.folios">
+          <td>{{folio.id}}</td>
+          <td>{{folio.description}}</td>
+          <td>{{folio.createdAt}}</td>
+          <td>{{folio.total}}</td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </div>

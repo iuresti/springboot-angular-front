@@ -44,4 +44,12 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  loginWithGoogle() {
+    this.authService.doGoogleLogin().subscribe(response => {
+      console.log(response);
+      console.log(response.currentUser.ra);
+      console.log(response.response.credential.accessToken);
+      console.log(response.response.credential.idToken);
+    });
+  }
 }
