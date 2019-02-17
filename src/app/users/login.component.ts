@@ -27,29 +27,9 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  login(): void {
-    console.log(this.user);
-    if (!this.user.username || !this.user.password) {
-      swal('Error login', 'Username o password vacíos', 'error');
-      return;
-    }
-
-    this.authService.login(this.user).pipe(tap(response => console.log(response))).subscribe(user => {
-      this.router.navigate(['/clients']);
-      swal('Login', `Bienvenido ${user.name} has iniciado sesión con éxito`, 'success');
-    }, error => {
-      if (error.status === 400) {
-        swal('Login', 'Credenciales incorrectas', 'error');
-      }
-    });
-  }
-
   loginWithGoogle() {
-    this.authService.doGoogleLogin().subscribe(response => {
-      console.log(response);
-      console.log(response.currentUser.ra);
-      console.log(response.response.credential.accessToken);
-      console.log(response.response.credential.idToken);
+    this.authService.doGoogleLogin().subscribe(user => {
+      console.log(user);
     });
   }
 }

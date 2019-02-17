@@ -21,7 +21,7 @@ export class AuthService {
     this._user = this.buildUser(this.accessToken);
   }
 
-  doGoogleLogin(): Observable<any> {
+  doGoogleLogin(): Observable<User> {
     return new Observable<any>(subscriber => {
       const provider = new firebase.auth.GoogleAuthProvider();
       provider.addScope('profile');
@@ -29,8 +29,12 @@ export class AuthService {
       this.afAuth.auth
         .signInWithPopup(provider)
         .then(res => {
-          subscriber.next({response: res, currentUser: res.user});
-          subscriber.complete();
+          if (res.user && res.user['ra']) {
+            this.login(res.user['ra']).subscribe(user => {
+              subscriber.next(user);
+              subscriber.complete();
+            });
+          }
         });
     });
   }
@@ -43,17 +47,16 @@ export class AuthService {
     return this.accessToken;
   }
 
-  login(user: User): Observable<User> {
+  login(tokenId: string): Observable<User> {
     const urlEndpoint = 'http://localhost:8080/oauth/token';
     const credentials = btoa('angular-app:12345');
     const httpHeaders = new HttpHeaders({
-      'Content-Type': 'application/x-www-form-urlencoded',
+        'Content-Type': 'application/x-www-form-urlencoded',
       'Authorization': `Basic ${credentials}`
     });
     const params = new URLSearchParams();
-    params.set('grant_type', 'password');
-    params.set('username', user.username);
-    params.set('password', user.password);
+    params.set('grant_type', 'firebase');
+    params.set('firebase-token-id', tokenId);
 
     return this.httpClient.post<any>(urlEndpoint, params.toString(), {headers: httpHeaders})
       .pipe(
